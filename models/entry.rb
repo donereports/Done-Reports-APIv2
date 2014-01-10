@@ -5,6 +5,8 @@ class Entry
   belongs_to :group
   belongs_to :user
 
+  has n, :tags
+
   property :date, DateTime
   property :type, String, :length => 100
   property :text, Text

@@ -36,6 +36,11 @@ class App < Jsonatra::Base
         text: params[:text]
       })
 
+      # Add tags for this entry
+      Tag.parse_str(params[:text]).each do |tag|
+        Tag.create({entry: entry, tag: tag})
+      end
+
       { 
         result: 'ok',
         entry: entry.id,
@@ -74,6 +79,7 @@ class App < Jsonatra::Base
     if last_entry
       # Can only delete entries from the last hour
       if last_entry.date >= (DateTime.now - 1.0/24.0)
+        last_entry.tags.destroy
         last_entry.destroy
         deleted = true
       end
