@@ -7,11 +7,14 @@ class Group
   has n, :entries
   has n, :users, :through => :group_user
 
+  property :slug, String, :length => 128
+
   property :token, String, :length => 128
   property :name, String, :length => 128
 
   property :irc_channel, String, :length => 100
   property :timezone, String, :length => 100
+  property :private, Boolean, :default => false
 
   property :prompt_command, String, :length => 50
   property :prompt_from, DateTime, :default => '2000-01-01 09:00:00'
