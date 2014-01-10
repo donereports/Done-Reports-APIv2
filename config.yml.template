@@ -1,0 +1,3 @@
+development:
+  base: 'http://api.donereports.dev'
+  database_url: 'postgres://user@localhost/donereports'
