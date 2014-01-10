@@ -44,5 +44,45 @@ class App < Jsonatra::Base
     end
   end
 
+  post '/entry/delete' do
+    require_group_auth
+
+    param_error :username, 'missing', 'username parameter required' if params[:username].blank?
+
+    # Load the user (usernames are globally unique)
+    @user = User.first :username => params[:username]
+    param_error :username, 'invalid', 'Invalid username was specified' if @user.nil?
+
+    if @user
+      # Verify the user is part of the authenticated group
+      is_member = (@user.groups & @group).length > 0
+      param_error :username, 'invalid', 'This user is not part of the specified group' unless is_member
+    end
+
+    halt if response.error?
+
+    # If text is specified, then remove the most recent entry matching the text
+    if params[:text]
+      last_entry = Entry.last({ group: @group, user: @user, text: params[:text] })
+    else
+      # Otherwise, remove the most recent entry for the user
+      last_entry = Entry.last({ group: @group, user: @user })
+    end
+
+    deleted = false
+
+    if last_entry
+      # Can only delete entries from the last hour
+      if last_entry.date >= (DateTime.now - 1.0/24.0)
+        last_entry.destroy
+        deleted = true
+      end
+    end
+
+    { 
+      result: (deleted ? 'deleted' : 'not_found'),
+      group: @group.slug
+    }
+  end
 
 end
