@@ -25,15 +25,12 @@ class Group
   end
 
   def api_hash(is_admin=false)
-    zone = Timezone::Zone.new :zone => due_timezone
-    time = due_time.to_time.strftime("%H:%M")
-
     {
       :slug => slug,
       :name => name,
       :org_name => org.name,
       :channel => irc_channel,
-      :server => (ircserver ? ircserver.api_hash : nil),
+      :server => (irc_server ? irc_server.api_hash : nil),
       :timezone => timezone,
       :date_created => created_at,
       :members => users.length,

@@ -8,6 +8,7 @@ gem 'httpclient'
 gem 'logger'
 gem 'rake'
 gem 'jwt'
+gem 'timezone'
 
 gem 'puma'
 gem 'shotgun'
