@@ -15,10 +15,16 @@ class App < Jsonatra::Base
 
     halt if response.error?
 
-    
+    query = Entry.all group: @group
+
+    entries = []
+    query.all.each do |entry|
+      entries << entry.api_hash(@group.timezone)
+    end
 
     {
-      group: @group.slug
+      group: @group.slug,
+      entries: entries
     }
   end
 

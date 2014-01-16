@@ -15,9 +15,10 @@ class Entry
   property :updated_at, DateTime
 
   def api_hash(timezone)
+    timezone = 
     {
       :id => id,
-      :content => message,
+      :content => text,
       :date => date.to_time.localtime(timezone.utc_offset).iso8601,
       :tags => []
     }

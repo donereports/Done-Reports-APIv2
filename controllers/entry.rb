@@ -21,7 +21,7 @@ class App < Jsonatra::Base
 
     # Check for duplicates - don't add a new entry if they just reported an exact match
     last_entry = Entry.last({ group: @group, user: @user })
-    if last_entry.type == params[:type] and last_entry.text == params[:text]
+    if last_entry and last_entry.type == params[:type] and last_entry.text == params[:text]
       { 
         result: 'duplicate',
         entry: last_entry.id,
